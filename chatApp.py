@@ -50,8 +50,8 @@ def lobby():
             print(ROOMS)
             file_path = "ROOMS/{}.txt".format(new_room)
             try:
-                # if not os.path.isdir("ROOMS"):
-                #     os.makedirs("ROOMS")
+                  if not os.path.isdir("ROOMS"):
+                      os.makedirs("ROOMS")
                 if not os.path.isfile(file_path):
                     with open(file_path, "w") as file:
                         file.write("Hello, this is some text. {}\n".format(new_room))
