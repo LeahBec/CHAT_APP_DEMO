@@ -16,39 +16,39 @@ def is_registered(name):
 
 def register_user(name, password):
       with open('users.csv', 'a') as myFile:
-            writer = csv.reader(myFile)
-            for line in myReader:
-                if line[0] == name:
-                     return True
-
+            writer = csv.writer(myFile)
+            writer.writerow([name, password.encode])
+@app.route('/register', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
-def homePage():
+def homePage():   
     error = None
-    is_registered = False
-    name = request.form['username']
-    password = request.form['password']
-    if is_registered(name):
-         return redirect('login.html')
-    else:
-         register_user(name, password)
-    # if request.method == "POST":
-    #     name = request.form['username']
-    #     password = request.form['password']
-    #     return f"your name is {name} and your pass is {password}"
-            #return render_template("login.html")
-    # if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-    #     error = 'Invalid Credentials. Please try again.'
-    # else:
-    #     return redirect(url_for('homePage'))
+    if request.method == "POST":
+     
+        name = request.form['username']
+        password = request.form['password']
+        if is_registered(name):
+            return redirect('login')
+        else:
+            register_user(name, password)
+            return redirect('login')
     return render_template('register.html', error=error)
 
-def main():
-     myList = []
-with open('users.csv', 'r') as myFile:
-    myReader = csv.reader(myFile)
-    myList = list(myReader)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+     
+        name = request.form['username']
+        password = request.form['password']
+        if is_registered(name):
+            return redirect('login')
+        else:
+            register_user(name, password)
+            return redirect('login')
     
-print(myList)
+    return render_template('login.html')
+
+
 
 
 
