@@ -1,6 +1,7 @@
 # set base image (host OS)
 FROM python:3.8
 RUN update-ca-certificates
+ENV ROOMS_DIR='rooms'
 # set the working directory in the container
 WORKDIR /code
 # copy the dependencies file to the working directory

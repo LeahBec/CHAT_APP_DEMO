@@ -8,9 +8,7 @@ app = Flask(__name__)
 ROOMS = []
 app.secret_key="secret_key"
 
-# @app.route('/')
-# def homePage():
-#     return render_template('register.html')
+
 def is_registered(name):
     with open('users.csv', 'r') as myFile:
             myReader = csv.reader(myFile)
@@ -19,11 +17,12 @@ def is_registered(name):
                      return True
                 
 
-
 def register_user(name, password):
       with open('users.csv', 'a') as myFile:
             writer = csv.writer(myFile)
             writer.writerow([name, password])
+
+
 @app.route('/register', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
 def homePage():   
@@ -63,6 +62,12 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return render_template('register.html')
+
+
 @app.route('/lobby', methods=['GET', 'POST'])
 def lobby():
     if request.method == "POST":
@@ -70,7 +75,7 @@ def lobby():
         if new_room not in ROOMS:
             ROOMS.append(new_room)
             print(ROOMS)
-            file_path = "ROOMS/{}.txt".format(new_room)
+            file_path = "os.getenv('ROOMS_DIR'){}.txt".format(new_room)
             try:
                   if not os.path.isdir("ROOMS"):
                       os.makedirs("ROOMS")
@@ -101,10 +106,8 @@ def extract_filename():
 @app.route('/chat/<room_name>')
 def chat(room_name):
     if request.method == "POST":
-        get_msg = request.form['msg']
-        room =extract_filename()
-        return "room {}".format(room)
-        file_path = "./ROOMS/{}.txt".format(room)
+        return "sent"
+        file_path = "./os.getenv('ROOMS_DIR'){}.txt".format(room_name)
     return render_template('chat.html', room=room_name)
 
 
