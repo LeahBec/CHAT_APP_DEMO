@@ -2,9 +2,9 @@ from flask import Flask, render_template, redirect, url_for, request
 
 app = Flask(__name__)
 
-@app.route('/')
-def homePage():
-    return render_template('register.html')
+# @app.route('/')
+# def homePage():
+#     return render_template('register.html')
 
 if __name__ == '__main__':
     app.debug = True
@@ -12,12 +12,13 @@ if __name__ == '__main__':
 
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def homePage():
     error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
-        else:
-            return redirect(url_for('homePage'))
+    name = request.form['username']
+    password = request.form['password']
+    # if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+    #     error = 'Invalid Credentials. Please try again.'
+    # else:
+    #     return redirect(url_for('homePage'))
     return render_template('register.html', error=error)
