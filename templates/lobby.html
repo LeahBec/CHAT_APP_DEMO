@@ -6,6 +6,91 @@ lobby.html
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat App Lobby</title>
 
+ 
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, h3, form, label, select, input, a {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font-family: inherit;
+        vertical-align: baseline;
+        text-align: center;
+        }
+
+        /* Body styles */
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        }
+
+        /* Header styles */
+        h1 {
+        font-size: 30px;
+        text-align: center;
+        padding: 20px;
+        color: #4285f4;
+        }
+
+        /* Section styles */
+        h2 {
+            font-size: 24px;
+        padding: 10px;
+        color: #333;
+        }
+
+        /* Form styles */
+        form {
+        text-align: center;
+        margin-top: 20px;
+        }
+
+        label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+        width: 40%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #333;
+        }
+
+        input[type="submit"] {
+        width: 40%;
+        background-color: #4285f4;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        }
+
+        /* Link styles */
+        a {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #4285f4;
+        text-decoration: none;
+        font-weight: bold;
+        }
+
+        a:hover {
+        text-decoration: underline;
+        }
+
+
+    </style>
 </head>
 <body>
     <h1>Hello, welcome to chat app!</h1>
@@ -27,6 +112,7 @@ lobby.html
             <option value="{{ room }}">{{ room }}</option>
             {% endfor %}
         </select>
+        <br />
         <input type="submit" name="enter" value="Enter">
     </form>
 

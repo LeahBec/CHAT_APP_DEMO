@@ -81,7 +81,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return render_template('register.html')
+    return render_template('login.html')
 
 
 @app.route('/lobby', methods=['GET', 'POST'])
