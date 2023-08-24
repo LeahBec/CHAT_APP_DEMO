@@ -3,10 +3,12 @@ import csv
 import os
 # import requests
 import urllib.parse
+from datetime import datetime
 
 app = Flask(__name__)
 ROOMS = []
 app.secret_key="secret_key"
+# file_path = "ROOMS/{}.txt"
 
 
 def is_registered(name):
@@ -21,6 +23,9 @@ def register_user(name, password):
       with open('users.csv', 'a') as myFile:
             writer = csv.writer(myFile)
             writer.writerow([name, password])
+
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -75,7 +80,7 @@ def lobby():
         if new_room not in ROOMS:
             ROOMS.append(new_room)
             print(ROOMS)
-            file_path = "os.getenv('ROOMS_DIR'){}.txt".format(new_room)
+            file_path = "ROOMS/{}.txt".format(new_room)
             try:
                   if not os.path.isdir("ROOMS"):
                       os.makedirs("ROOMS")
@@ -83,7 +88,7 @@ def lobby():
                     with open(file_path, "w") as file:
                         file.write("Hello, this is some text. {}\n".format(new_room))
                 # with open(file_path, "r+") as file:
-                #     txt = file.read()
+                #     txt = fdofile.read()
                 #     return txt
             except FileNotFoundError:
                 return "File not found."
@@ -103,12 +108,33 @@ def extract_filename():
 
 
 
-@app.route('/chat/<room_name>')
+# @app.route('/chat/<room_name>')
+# def chat(room_name):
+#     if request.method == "POST":
+#         return "sent"
+#         file_path = "./os.getenv('ROOMS_DIR'){}.txt".format(room_name)
+#     return render_template('chat.html', room=room_name)
+@app.route('/chat/<room_name>', methods=['GET', 'POST'])
 def chat(room_name):
-    if request.method == "POST":
-        return "sent"
-        file_path = "./os.getenv('ROOMS_DIR'){}.txt".format(room_name)
-    return render_template('chat.html', room=room_name)
+        return render_template('chat.html', room=room_name)
+
+@app.route('/api/chat/<room_name>', methods=['GET', 'POST'])
+def update_chat(room_name):
+        file_path = "ROOMS/{}.txt".format(room_name)
+        print("{}".format(room_name))
+        if request.method == "POST":
+            
+            print("aaa")
+            message = request.form['msg']
+            username = session['username']
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    # Append the message to the room's unique .txt file
+            with open(file_path, 'a') as file:
+                            file.write(f'[{timestamp}] {username}: {message}\n')
+        with open(file_path, 'r') as file:
+            file.seek(0)
+            all_data = file.read()
+            return all_data
 
 
 if __name__ == '__main__':
