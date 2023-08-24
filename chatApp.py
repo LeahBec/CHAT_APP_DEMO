@@ -4,11 +4,25 @@ import os
 # import requests
 import urllib.parse
 from datetime import datetime
+import base64
 
 app = Flask(__name__)
 ROOMS = []
 app.secret_key="secret_key"
-# file_path = "ROOMS/{}.txt"
+
+
+def encode_password(user_pass):
+    pass_bytes = user_pass.encode('ascii')
+    base64_bytes = base64.b64encode(pass_bytes)
+    base64_message = base64_bytes.decode('ascii')
+    return base64_message
+
+
+def decode_password(user_pass):
+     base64_bytes = user_pass.encode('ascii')
+     pass_bytes = base64.b64decode(base64_bytes)
+     user_pass = pass_bytes.decode('ascii')
+     return user_pass
 
 
 def is_registered(name):
@@ -22,10 +36,7 @@ def is_registered(name):
 def register_user(name, password):
       with open('users.csv', 'a') as myFile:
             writer = csv.writer(myFile)
-            writer.writerow([name, password])
-
-
-
+            writer.writerow([name, encode_password(password)])
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -48,7 +59,7 @@ def is_right_pass(name, password):
          with open('users.csv', 'r') as myFile:
             myReader = csv.reader(myFile)
             for line in myReader:
-                if line[0] == name and line[1] == password:
+                if line[0] == name and decode_password(line[1]) == password:
                      return True
          return False
 
@@ -80,13 +91,13 @@ def lobby():
         if new_room not in ROOMS:
             ROOMS.append(new_room)
             print(ROOMS)
-            file_path = "ROOMS/{}.txt".format(new_room)
+            file_path = "os.getenv('ROOMS_DIR'){}.txt".format(new_room)
             try:
                   if not os.path.isdir("ROOMS"):
                       os.makedirs("ROOMS")
                   if not os.path.isfile(file_path):
                     with open(file_path, "w") as file:
-                        file.write("Hello, this is some text. {}\n".format(new_room))
+                        file.write("Hello, you are in room: {}\n".format(new_room))
                 # with open(file_path, "r+") as file:
                 #     txt = fdofile.read()
                 #     return txt
@@ -107,34 +118,23 @@ def extract_filename():
     return filename
 
 
-
-# @app.route('/chat/<room_name>')
-# def chat(room_name):
-#     if request.method == "POST":
-#         return "sent"
-#         file_path = "./os.getenv('ROOMS_DIR'){}.txt".format(room_name)
-#     return render_template('chat.html', room=room_name)
 @app.route('/chat/<room_name>', methods=['GET', 'POST'])
 def chat(room_name):
         return render_template('chat.html', room=room_name)
 
 @app.route('/api/chat/<room_name>', methods=['GET', 'POST'])
-def update_chat(room_name):
-        file_path = "ROOMS/{}.txt".format(room_name)
-        print("{}".format(room_name))
+def update_msg(room_name):
+        file_path = "os.getenv('ROOMS_DIR'){}.txt".format(room_name)
         if request.method == "POST":
-            
-            print("aaa")
-            message = request.form['msg']
+            msg = request.form['msg']
             username = session['username']
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    # Append the message to the room's unique .txt file
             with open(file_path, 'a') as file:
-                            file.write(f'[{timestamp}] {username}: {message}\n')
+                file.write(f'[{timestamp}] {username}: {msg}\n')
         with open(file_path, 'r') as file:
             file.seek(0)
-            all_data = file.read()
-            return all_data
+            massages = file.read()
+            return massages
 
 
 if __name__ == '__main__':

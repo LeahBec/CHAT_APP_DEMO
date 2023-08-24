@@ -6,6 +6,8 @@ ENV ROOMS_DIR='rooms'
 WORKDIR /code
 # copy the dependencies file to the working directory
 COPY requirements.txt .
+ENV FLASK_ENV development
+ENV ROOMS_DIR='ROOMS'
 # install dependencies
 RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
 # copy the content of the local src directory to the working directory
