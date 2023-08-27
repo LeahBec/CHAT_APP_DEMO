@@ -1,4 +1,4 @@
-אלופיייייייית😘😘😘😘😘😘
- 
-
-# CHAT_APP_DEMO
+Chat Application
+Authors:
+Efrat Yellin
+Leah Beckerman
