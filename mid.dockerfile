@@ -1,5 +1,5 @@
 # set base image (host OS)
-FROM python:3.8 as builder
+FROM python:3.8-slim as builder
 RUN update-ca-certificates
 ENV ROOMS_DIR='rooms'
 # set the working directory in the container

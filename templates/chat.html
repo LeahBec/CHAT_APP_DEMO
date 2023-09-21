@@ -119,6 +119,14 @@ templates
       <br>
       <br>
       <a href="/logout">logout</a>
+      <form id="clear-form" action="{{ url_for('del_data', room_name=room) }}" method="POST">
+         <button onclick="submitForm()">Clear</button>
+      </form>
+      <script>
+        function submitForm() {
+          document.getElementById("clear-form").submit();
+          }
+      </script>
 
     </body>
   </html>

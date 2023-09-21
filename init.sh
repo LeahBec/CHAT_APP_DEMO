@@ -1,9 +1,13 @@
 #!/bin/bash
-# To remove only the container that build on the image "chat-app"
-docker rm $(docker ps -a -q --filter="ancestor=chat-app")
-# To remove all the images "chat-app"
-docker rmi $(docker images -q --filter="name=chat-app")
-# To build the image "chat-app"
-docker build -t chat-app . 
-# To run the image
-docker run -it -p 5000:5000 chat-app
+
+#!/bin/bash
+version='latest'
+if [ $# -ne 0 ]; then
+  # Arguments were passed, so use them
+    version=$1
+fi
+
+
+docker volume create chat-app-data
+docker build -t  chat-app:${version} .
+docker run -v chat-app-data:/chatApp/data -p 5000:5000 --name chat-App-run chat-app:${version}

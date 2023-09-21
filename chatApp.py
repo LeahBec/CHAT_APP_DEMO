@@ -137,9 +137,23 @@ def update_msg(room_name):
             return massages
 
 
+@app.route("/api/chat/<room_name>/clear_messages", methods=['GET', 'POST'])
+def del_data(room_name):
+     file_path = "os.getenv('ROOMS_DIR'){}.txt".format(room_name)
+     with open(file_path, 'r') as rfile:
+       data = rfile.readlines()
+       with open(file_path, 'w') as wfile:
+            for line in data:
+                print(line.split()[2])
+                if line.split()[2] != '{}:'.format(session["username"]):
+                    wfile.write(line)
+            wfile.truncate()
+       
+   
+
+     return redirect("/chat/"+room_name)
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port='5000', debug='True')
-
-
-
